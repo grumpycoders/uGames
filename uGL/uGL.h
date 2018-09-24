@@ -19,11 +19,11 @@ typedef enum {
 } uGL_colormode;
 
 typedef struct {
-  uint8_t *data;
   uint16_t width;
   uint16_t length;
   uGL_colormode colormode;
   uGL_lookuptable *lookuptable;
+  uint8_t *data;
 } uGL_image;
 
 
