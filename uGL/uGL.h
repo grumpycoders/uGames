@@ -35,4 +35,4 @@ uGL_drawVLine(uint16_t x, uint16_t y, uint16_t length, uGL_color color);
 uGL_drawFrame(uint16_t x, uint16_t y, uint16_t width, uint16_t length, uGL_color color);
 uGL_drawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t length, uGL_color color);
 
-uGl_blitImage(uGL_image image, uint16_t x, uint16_t y);
+uGl_blitImage(uGL_image *image, uint16_t x, uint16_t y);
