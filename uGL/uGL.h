@@ -1,21 +1,23 @@
 #pragma once
 
+#include <stdlib.h>
+
 typedef struct {
   uint8_t r;
   uint8_t g;
   uint8_t b;
   uint8_t a;
-} uGL_color;
+} uGL_color_t;
 
-typedef uGL_color *uGL_lookuptable;
+typedef uGL_color_t *uGL_lookuptable;
 
 typedef enum {
-  INDEXED1  1,
-  INDEXED2  2,
-  INDEXED4  4,
-  INDEXED8  8,
-  RGB      24,
-  RGBA     32
+  INDEXED1 = 1,
+  INDEXED2 = 2,
+  INDEXED4 = 4,
+  INDEXED8 = 8,
+  RGB      = 24,
+  RGBA     = 32
 } uGL_colormode;
 
 typedef struct {
@@ -24,15 +26,15 @@ typedef struct {
   uGL_colormode colormode;
   uGL_lookuptable *lookuptable;
   uint8_t *data;
-} uGL_image;
+} uGL_image_t;
 
 
-uGL_init();
+void uGL_init();
 
-uGL_drawPixel(uint16_t x, uint16_t y, uGL_color color);
-uGL_drawHLine(uint16_t x, uint16_t y, uint16_t length, uGL_color color);
-uGL_drawVLine(uint16_t x, uint16_t y, uint16_t length, uGL_color color);
-uGL_drawFrame(uint16_t x, uint16_t y, uint16_t width, uint16_t length, uGL_color color);
-uGL_drawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t length, uGL_color color);
+void uGL_drawPixel(uint16_t x, uint16_t y, uGL_color_t color);
+void uGL_drawHLine(uint16_t x, uint16_t y, uint16_t length, uGL_color_t color);
+void uGL_drawVLine(uint16_t x, uint16_t y, uint16_t length, uGL_color_t color);
+void uGL_drawFrame(uint16_t x, uint16_t y, uint16_t width, uint16_t length, uGL_color_t color);
+void uGL_drawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t length, uGL_color_t color);
 
-uGl_blitImage(uGL_image *image, uint16_t x, uint16_t y);
+void uGl_blitImage(uGL_image_t *image, uint16_t x, uint16_t y);

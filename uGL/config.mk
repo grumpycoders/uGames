@@ -1,0 +1,5 @@
+TARGET_INCLUDES += $(MAINDIR)/uGL
+
+ifeq ($(USE_MPU),true)
+TARGET_CPPFLAGS += -DportUSING_MPU_WRAPPERS=1
+endif
