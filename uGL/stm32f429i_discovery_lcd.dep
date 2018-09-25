@@ -43,7 +43,15 @@ uGL/stm32f429i_discovery_lcd.o: uGL/stm32f429i_discovery_lcd.c \
  uGL/stm32f429i_discovery.h uGL/stm32f429i_discovery_sdram.h uGL/fonts.h \
  /Users/tom/Documents/src/uGames/uC-sdk/arch/arm/stm32f4xx/Drivers/include/stm32f4xx_ltdc.h \
  /Users/tom/Documents/src/uGames/uC-sdk/arch/arm/stm32f4xx/Drivers/include/stm32f4xx_dma2d.h \
- /Users/tom/Documents/src/uGames/uC-sdk/hardware/include/gpio.h \
+ /Users/tom/Documents/src/uGames/uC-sdk/libc/include/stdlib.h \
  /Users/tom/Documents/src/uGames/uC-sdk/libc/include/decl.h \
+ /Users/tom/Documents/src/uGames/uC-sdk/libc/include/reent.h \
+ /Users/tom/Documents/src/uGames/uC-sdk/libc/include/errno.h \
+ /Users/tom/Documents/src/uGames/uC-sdk/libc/include/malloc.h \
+ /usr/local/Caskroom/gcc-arm-embedded/7-2017-q4-major/gcc-arm-none-eabi-7-2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/include/stddef.h \
+ /Users/tom/Documents/src/uGames/uC-sdk/libc/include/stdio.h \
+ /usr/local/Caskroom/gcc-arm-embedded/7-2017-q4-major/gcc-arm-none-eabi-7-2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/include/stdarg.h \
+ /Users/tom/Documents/src/uGames/uC-sdk/libc/include/unistd.h \
+ /Users/tom/Documents/src/uGames/uC-sdk/hardware/include/gpio.h \
  /usr/local/Caskroom/gcc-arm-embedded/7-2017-q4-major/gcc-arm-none-eabi-7-2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/include/stdbool.h \
  /Users/tom/Documents/src/uGames/uC-sdk/hardware/include/ssp.h

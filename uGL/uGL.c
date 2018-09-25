@@ -5,7 +5,7 @@
 #include "stm32f429i_discovery_lcd.h"
 #include <stm32f4xx_ltdc.h>
 
-static uint8_t *_framebuffer = (uint8_t *)LCD_FRAME_BUFFER;
+static uint16_t *_framebuffer = (uint16_t *)(LCD_FRAME_BUFFER + BUFFER_OFFSET);
 static const uint16_t screenwidth = 240;
 static const  uint16_t screenheight = 320;
 
@@ -34,31 +34,23 @@ uint16_t uGL_getScreenWidth()
   return screenwidth;
 }
 
-
 void uGL_drawPixel(uint16_t x, uint16_t y, uGL_color_t color)
 {
-  uint8_t c[3] = { color.r, color.g, color.b };
-  //LCD_SetTextColor(ASSEMBLE_RGB(color.r, color.g, color.b));
-  memcpy(c, _framebuffer + 3 * (x + screenwidth * y), 3 * sizeof(uint8_t));
-  /*_framebuffer[3 * (x + screenwidth * y)] = color.r;
-  _framebuffer[3 * (x + screenwidth * y) + 1] = color.g;
-  _framebuffer[3 * (x + screenwidth * y) + 2] = color.b;*/
-//  PutPixel(int16_t x, int16_t y);
+  _framebuffer[x + screenwidth * y] = ASSEMBLE_RGB2(color);
 }
 
 void uGL_drawHLine(uint16_t x, uint16_t y, uint16_t length, uGL_color_t color)
 {
-  LCD_SetTextColor(ASSEMBLE_RGB(color.r, color.g, color.b));
-  LCD_DrawLine(x, y, length, LCD_DIR_HORIZONTAL);
-  //TODO: optimize
-//  for (int i = 0 ; i < length ; i++)
-//    uGL_drawPixel(x + i, y, color);
+  for (int i = 0 ; i < length ; i++)
+    uGL_drawPixel(x + i, y, color);
 }
 
 void uGL_drawVLine(uint16_t x, uint16_t y, uint16_t length, uGL_color_t color)
 {
-  LCD_SetTextColor(ASSEMBLE_RGB(color.r, color.g, color.b));
-  LCD_DrawLine(x, y, length, LCD_DIR_VERTICAL);
+  LCD_SetTextColor(ASSEMBLE_RGB2(color));
+  for (int i = 0 ; i < length ; i++)
+    uGL_drawPixel(x, y + i, color);
+  //LCD_DrawLine(x, y, length, LCD_DIR_VERTICAL);
 }
 
 void uGL_drawFrame(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uGL_color_t color)
@@ -71,7 +63,9 @@ void uGL_drawFrame(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uGL_
 
 void uGL_drawRectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uGL_color_t color)
 {
-  LCD_SetTextColor(ASSEMBLE_RGB(color.r, color.g, color.b));
+  LCD_SetTextColor(ASSEMBLE_RGB2(color));
+//  LCD_SetTextColor(color);
+  //LCD_SetTextColor(ASSEMBLE_RGB(color.r, color.g, color.b));
   LCD_DrawFullRect(x, y, width, height);
 }
 

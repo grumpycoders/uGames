@@ -4,7 +4,7 @@
   * @author  MCD Application Team
   * @version V1.0.1
   * @date    28-October-2013
-  * @brief   This file contains all the functions prototypes for the
+  * @brief   This file contains all the functions prototypes for the 
   *          stm32f429i_discovery_lcd.c driver.
   ******************************************************************************
   * @attention
@@ -17,8 +17,8 @@
   *
   *        http://www.st.com/software_license_agreement_liberty_v2
   *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
+  * Unless required by applicable law or agreed to in writing, software 
+  * distributed under the License is distributed on an "AS IS" BASIS, 
   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   * See the License for the specific language governing permissions and
   * limitations under the License.
@@ -32,7 +32,7 @@
 
 #ifdef __cplusplus
  extern "C" {
-#endif
+#endif 
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
@@ -46,48 +46,48 @@
 
 /** @addtogroup STM32F4_DISCOVERY
   * @{
-  */
+  */ 
 
 /** @addtogroup STM32F429I_DISCOVERY
   * @{
   */
-
+    
 /** @addtogroup STM32F429I_DISCOVERY_LCD
   * @{
-  */
+  */ 
 
 
 /** @defgroup STM32F429I_DISCOVERY_LCD_Exported_Types
   * @{
   */
-typedef struct
+typedef struct 
 {
   int16_t X;
   int16_t Y;
-} Point, * pPoint;
+} Point, * pPoint;   
 /**
   * @}
-  */
+  */ 
 
 /** @defgroup stm32f429i_discovery_LCD_Exported_Constants
   * @{
-  */
+  */ 
 
 /* LCD Size (Width and Height) */
 #define  LCD_PIXEL_WIDTH    ((uint16_t)240)
 #define  LCD_PIXEL_HEIGHT   ((uint16_t)320)
 
 #define LCD_FRAME_BUFFER       ((uint32_t)0xD0000000)
-#define BUFFER_OFFSET          ((uint32_t)0x50000)
+#define BUFFER_OFFSET          ((uint32_t)0x50000) 
 /**
  * @brief Uncomment the line below if you want to use user defined Delay function
  *        (for precise timing), otherwise default _delay_ function defined within
- *         this driver is used (less precise timing).
+ *         this driver is used (less precise timing).  
  */
 /* #define USE_Delay */
 
 #ifdef USE_Delay
-#include "main.h"
+#include "main.h" 
   #define _delay_     Delay  /* !< User can provide more timing precise _delay_ function
                                    (with 10ms time base), using SysTick for example */
 #else
@@ -95,51 +95,51 @@ typedef struct
 #endif
 
 
-/**
-  * @brief  LCD Control pin
-  */
-#define LCD_NCS_PIN             GPIO_Pin_2
-#define LCD_NCS_GPIO_PORT       GPIOC
-#define LCD_NCS_GPIO_CLK        RCC_AHB1Periph_GPIOC
+/** 
+  * @brief  LCD Control pin  
+  */ 
+#define LCD_NCS_PIN             GPIO_Pin_2                  
+#define LCD_NCS_GPIO_PORT       GPIOC                      
+#define LCD_NCS_GPIO_CLK        RCC_AHB1Periph_GPIOC 
 
-/**
-  * @brief  LCD Command/data pin
+/** 
+  * @brief  LCD Command/data pin  
   */
-#define LCD_WRX_PIN             GPIO_Pin_13
+#define LCD_WRX_PIN             GPIO_Pin_13                  
 #define LCD_WRX_GPIO_PORT       GPIOD
-#define LCD_WRX_GPIO_CLK        RCC_AHB1Periph_GPIOD
+#define LCD_WRX_GPIO_CLK        RCC_AHB1Periph_GPIOD 
 
-/**
-  * @brief  LCD SPI Interface pins
-  */
+/** 
+  * @brief  LCD SPI Interface pins 
+  */ 
 #define LCD_SPI_SCK_PIN               GPIO_Pin_7                     /* PF.07 */
 #define LCD_SPI_SCK_GPIO_PORT         GPIOF                          /* GPIOF */
-#define LCD_SPI_SCK_GPIO_CLK          RCC_AHB1Periph_GPIOF
+#define LCD_SPI_SCK_GPIO_CLK          RCC_AHB1Periph_GPIOF  
 #define LCD_SPI_SCK_SOURCE            GPIO_PinSource7
 #define LCD_SPI_SCK_AF                GPIO_AF_SPI5
 #define LCD_SPI_MISO_PIN              GPIO_Pin_8                     /* PF.08 */
 #define LCD_SPI_MISO_GPIO_PORT        GPIOF                          /* GPIOF */
-#define LCD_SPI_MISO_GPIO_CLK         RCC_AHB1Periph_GPIOF
+#define LCD_SPI_MISO_GPIO_CLK         RCC_AHB1Periph_GPIOF  
 #define LCD_SPI_MISO_SOURCE           GPIO_PinSource8
 #define LCD_SPI_MISO_AF               GPIO_AF_SPI5
 #define LCD_SPI_MOSI_PIN              GPIO_Pin_9                     /* PF.09 */
 #define LCD_SPI_MOSI_GPIO_PORT        GPIOF                          /* GPIOF */
-#define LCD_SPI_MOSI_GPIO_CLK         RCC_AHB1Periph_GPIOF
+#define LCD_SPI_MOSI_GPIO_CLK         RCC_AHB1Periph_GPIOF  
 #define LCD_SPI_MOSI_SOURCE           GPIO_PinSource9
 #define LCD_SPI_MOSI_AF               GPIO_AF_SPI5
 #define LCD_SPI                       SPI5
-#define LCD_SPI_CLK                   RCC_APB2Periph_SPI5
+#define LCD_SPI_CLK                   RCC_APB2Periph_SPI5 
 
-/**
-  * @brief  LCD Registers
-  */
+/** 
+  * @brief  LCD Registers  
+  */ 
 #define LCD_SLEEP_OUT            0x11   /* Sleep out register */
 #define LCD_GAMMA                0x26   /* Gamma register */
 #define LCD_DISPLAY_OFF          0x28   /* Display off register */
 #define LCD_DISPLAY_ON           0x29   /* Display on register */
-#define LCD_COLUMN_ADDR          0x2A   /* Colomn address register */
-#define LCD_PAGE_ADDR            0x2B   /* Page address register */
-#define LCD_GRAM                 0x2C   /* GRAM register */
+#define LCD_COLUMN_ADDR          0x2A   /* Colomn address register */ 
+#define LCD_PAGE_ADDR            0x2B   /* Page address register */ 
+#define LCD_GRAM                 0x2C   /* GRAM register */   
 #define LCD_MAC                  0x36   /* Memory Access Control register*/
 #define LCD_PIXEL_FORMAT         0x3A   /* Pixel Format register */
 #define LCD_WDB                  0x51   /* Write Brightness Display register */
@@ -163,9 +163,9 @@ typedef struct
 #define LCD_INTERFACE            0xF6   /* Interface control register */
 #define LCD_PRC                  0xF7   /* Pump ratio control register */
 
-/**
-  * @brief  LCD color
-  */
+/** 
+  * @brief  LCD color  
+  */ 
 #define LCD_COLOR_WHITE          0xFFFF
 #define LCD_COLOR_BLACK          0x0000
 #define LCD_COLOR_GREY           0xF7DE
@@ -177,8 +177,8 @@ typedef struct
 #define LCD_COLOR_CYAN           0x7FFF
 #define LCD_COLOR_YELLOW         0xFFE0
 
-/**
-  * @brief  LCD Lines depending on the chosen fonts.
+/** 
+  * @brief  LCD Lines depending on the chosen fonts.  
   */
 #define LCD_LINE_0               LINE(0)
 #define LCD_LINE_1               LINE(1)
@@ -221,49 +221,50 @@ typedef struct
 #define LCD_LINE_38              LINE(38)
 #define LCD_LINE_39              LINE(39)
 
-/**
-  * @brief LCD default font
-  */
+/** 
+  * @brief LCD default font 
+  */ 
 #define LCD_DEFAULT_FONT         Font16x24
 
-/**
-  * @brief  LCD Direction
-  */
+/** 
+  * @brief  LCD Direction  
+  */ 
 #define LCD_DIR_HORIZONTAL       0x0000
 #define LCD_DIR_VERTICAL         0x0001
 
 /**
   * @}
-  */
+  */ 
 
-/**
-  * @brief  LCD Layer
-  */
+/** 
+  * @brief  LCD Layer  
+  */ 
 #define LCD_BACKGROUND_LAYER     0x0000
 #define LCD_FOREGROUND_LAYER     0x0001
 
 /**
   * @}
-  */
+  */ 
 
 /** @defgroup STM32F429I_DISCOVERY_LCD_Exported_Macros
   * @{
-  */
+  */ 
 #define ASSEMBLE_RGB(R, G, B)    ((((R)& 0xF8) << 8) | (((G) & 0xFC) << 3) | (((B) & 0xF8) >> 3))
+#define ASSEMBLE_RGB2(RGB)    (((RGB.r & 0xF8) << 8) | (((RGB.g) & 0xFC) << 3) | (((RGB.b) & 0xF8) >> 3))
 
 /**
   * @}
-  */
+  */ 
 
 /** @defgroup STM32F429I_DISCOVERY_LCD_Exported_Functions
   * @{
-  */
-void     LCD_DeInit(void);
+  */ 
+void     LCD_DeInit(void);   
 void     LCD_Init(void);
 void     LCD_LayerInit(void);
 void     LCD_ChipSelect(FunctionalState NewState);
 void     LCD_SetLayer(uint32_t Layerx);
-void     LCD_SetColors(uint16_t _TextColor, uint16_t _BackColor);
+void     LCD_SetColors(uint16_t _TextColor, uint16_t _BackColor); 
 void     LCD_GetColors(uint16_t *_TextColor, uint16_t *_BackColor);
 void     LCD_SetTextColor(uint16_t Color);
 void     LCD_SetBackColor(uint16_t Color);
@@ -307,8 +308,8 @@ void     LCD_CtrlLinesWrite(GPIO_TypeDef* GPIOx, uint16_t CtrlPins, BitAction Bi
 void     LCD_SPIConfig(void);
 /**
   * @}
-  */
-
+  */    
+  
 #ifdef __cplusplus
 }
 #endif
@@ -317,18 +318,18 @@ void     LCD_SPIConfig(void);
 
 /**
   * @}
-  */
+  */ 
+
+/**
+  * @}
+  */ 
+
+/**
+  * @}
+  */ 
 
 /**
   * @}
   */
-
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
+  
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

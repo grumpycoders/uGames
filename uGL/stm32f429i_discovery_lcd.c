@@ -32,6 +32,8 @@
 #include "stm32f4xx_dma2d.h"
 //#include "fonts.c"
 
+#include <stdlib.h>
+
 #include <gpio.h>
 #include <ssp.h>
 ssp_port_t lcd_port = {
@@ -153,7 +155,6 @@ void LCD_Init(void)
 
 
 
-
   /* Configure the FMC Parallel interface : SDRAM is used as Frame Buffer for LCD */
   SDRAM_Init();
 
@@ -210,131 +211,6 @@ void LCD_Init(void)
   LTDC_Init(&LTDC_InitStruct);
 }
 
-
-/**
-  * @}
-  */
-
-/** @defgroup STM32F429I_DISCOVERY_LCD_Private_Functions
-  * @{
-  */
-
-/**
-  * @brief  DeInitializes the LCD.
-  * @param  None
-  * @retval None
-  */
-void LCD_DeInit(void)
-{
-  GPIO_InitTypeDef GPIO_InitStructure;
-
-  /* LCD Display Off */
-  LCD_DisplayOff();
-
-  /* LCD_SPI disable */
-  SPI_Cmd(LCD_SPI, DISABLE);
-
-  /* LCD_SPI DeInit */
-  SPI_I2S_DeInit(LCD_SPI);
-
-  /* Disable SPI clock  */
-  RCC_APB2PeriphClockCmd(LCD_SPI_CLK, DISABLE);
-
-  /* Configure NCS in Output Push-Pull mode */
-  GPIO_InitStructure.GPIO_Pin = LCD_NCS_PIN;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(LCD_NCS_GPIO_PORT, &GPIO_InitStructure);
-
-  /* Configure SPI pins: SCK, MISO and MOSI */
-  GPIO_InitStructure.GPIO_Pin = LCD_SPI_SCK_PIN;
-  GPIO_Init(LCD_SPI_SCK_GPIO_PORT, &GPIO_InitStructure);
-
-  GPIO_InitStructure.GPIO_Pin = LCD_SPI_MISO_PIN;
-  GPIO_Init(LCD_SPI_MISO_GPIO_PORT, &GPIO_InitStructure);
-
-  GPIO_InitStructure.GPIO_Pin = LCD_SPI_MOSI_PIN;
-  GPIO_Init(LCD_SPI_MOSI_GPIO_PORT, &GPIO_InitStructure);
-
-  /* GPIOA configuration */
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_MCO);
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource4, GPIO_AF_MCO);
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource6, GPIO_AF_MCO);
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource11, GPIO_AF_MCO);
-  GPIO_PinAFConfig(GPIOA, GPIO_PinSource12, GPIO_AF_MCO);
-
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_6 |
-                                GPIO_Pin_11 | GPIO_Pin_12;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-  /* GPIOB configuration */
-  GPIO_PinAFConfig(GPIOB, GPIO_PinSource0, GPIO_AF_MCO);
-  GPIO_PinAFConfig(GPIOB, GPIO_PinSource1, GPIO_AF_MCO);
-  GPIO_PinAFConfig(GPIOB, GPIO_PinSource8, GPIO_AF_MCO);
-  GPIO_PinAFConfig(GPIOB, GPIO_PinSource9, GPIO_AF_MCO);
-  GPIO_PinAFConfig(GPIOB, GPIO_PinSource10, GPIO_AF_MCO);
-  GPIO_PinAFConfig(GPIOB, GPIO_PinSource11, GPIO_AF_MCO);
-
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0  | GPIO_Pin_1  | GPIO_Pin_8    |
-                                GPIO_Pin_9  |  GPIO_Pin_10 | GPIO_Pin_11;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-  /* GPIOC configuration */
-  GPIO_PinAFConfig(GPIOC, GPIO_PinSource6, GPIO_AF_MCO);
-  GPIO_PinAFConfig(GPIOC, GPIO_PinSource7, GPIO_AF_MCO);
-  GPIO_PinAFConfig(GPIOC, GPIO_PinSource10, GPIO_AF_MCO);
-
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6  | GPIO_Pin_7  | GPIO_Pin_10;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOC, &GPIO_InitStructure);
-
-  /* GPIOD configuration */
-  GPIO_PinAFConfig(GPIOD, GPIO_PinSource3, GPIO_AF_MCO);
-  GPIO_PinAFConfig(GPIOD, GPIO_PinSource6, GPIO_AF_MCO);
-
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3  | GPIO_Pin_6;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOD, &GPIO_InitStructure);
-
-  /* GPIOF configuration */
-  GPIO_PinAFConfig(GPIOF, GPIO_PinSource10, GPIO_AF_MCO);
-
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOF, &GPIO_InitStructure);
-
-  /* GPIOG configuration */
-  GPIO_PinAFConfig(GPIOG, GPIO_PinSource6, GPIO_AF_MCO);
-  GPIO_PinAFConfig(GPIOG, GPIO_PinSource7, GPIO_AF_MCO);
-  GPIO_PinAFConfig(GPIOG, GPIO_PinSource10, GPIO_AF_MCO);
-  GPIO_PinAFConfig(GPIOG, GPIO_PinSource11, GPIO_AF_MCO);
-  GPIO_PinAFConfig(GPIOG, GPIO_PinSource12, GPIO_AF_MCO);
-
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6  | GPIO_Pin_7  | GPIO_Pin_10    |
-                                GPIO_Pin_11 | GPIO_Pin_12;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOG, &GPIO_InitStructure);
-}
 
 /**
   * @brief  Initializes the LCD Layers.
@@ -416,6 +292,147 @@ void LCD_LayerInit(void)
   /* dithering activation */
   LTDC_DitherCmd(ENABLE);
 }
+
+void LCD_WriteChunk(uint8_t command, uint8_t *data, uint8_t nb)
+{
+  gpio_set(lcd_wrx, 0);
+  gpio_set(lcd_ncs, 0);
+  ssp_write(ssp_5, command);
+  while(SPI_I2S_GetFlagStatus(LCD_SPI, SPI_I2S_FLAG_BSY) != RESET);
+  //gpio_set(lcd_ncs, 1);
+
+  for (int i = 0 ; i < nb ; i++)
+  {
+    gpio_set(lcd_wrx, 1);
+    //gpio_set(lcd_ncs, 0);
+    ssp_write(ssp_5, data[i]);
+    while(SPI_I2S_GetFlagStatus(LCD_SPI, SPI_I2S_FLAG_BSY) != RESET);
+    
+  }
+  gpio_set(lcd_ncs, 1);
+}
+
+
+/**
+  * @brief  Configure the LCD controller (Power On sequence as described in ILI9341 Datasheet)
+  * @param  None
+  * @retval None
+  */
+void LCD_PowerOn(void)
+{
+  uint8_t buffer_init[] = {0xC3, 0x08, 0x50};
+  LCD_WriteChunk(0xCA, buffer_init, 3);
+
+  uint8_t buffer_powerb[] = {0x00, 0xC1, 0x30};
+  LCD_WriteChunk(LCD_POWERB, buffer_powerb, 3);
+
+  uint8_t buffer_powerseq[] = {0x64, 0x03, 0x12, 0x81};
+  LCD_WriteChunk(LCD_POWER_SEQ, buffer_powerseq, 4);
+
+  uint8_t buffer_dtca[] = {0x85, 0x00, 0x78};
+  LCD_WriteChunk(LCD_DTCA, buffer_dtca, 3);
+
+  uint8_t buffer_powera[] = {0x39, 0x2C, 0x00, 0x34, 0x02};
+  LCD_WriteChunk(LCD_DTCA, buffer_powera, 5);
+
+  uint8_t buffer_prc[] = {0x20};
+  LCD_WriteChunk(LCD_PRC, buffer_prc, 1);
+
+  uint8_t buffer_dtcb[] = {0x00, 0x00};
+  LCD_WriteChunk(LCD_DTCB, buffer_dtcb, 2);
+
+  uint8_t buffer_frc[] = {0x00, 0x1B};
+  LCD_WriteChunk(LCD_FRC, buffer_frc, 2);
+
+  uint8_t buffer_dfc[] = {0x0A, 0xA2};
+  LCD_WriteChunk(LCD_DFC, buffer_dfc, 2);
+
+  uint8_t buffer_power1[] = {0x10};
+  LCD_WriteChunk(LCD_POWER1, buffer_power1, 1);
+
+  uint8_t buffer_power2[] = {0x10};
+  LCD_WriteChunk(LCD_POWER2, buffer_power2, 1);
+
+  uint8_t buffer_vcom1[] = {0x45, 0x15};
+  LCD_WriteChunk(LCD_VCOM1, buffer_vcom1, 2);
+
+  uint8_t buffer_vcom2[] = {0x90};
+  LCD_WriteChunk(LCD_VCOM2, buffer_vcom2, 1);
+
+  uint8_t buffer_mac[] = {0xC8};
+  LCD_WriteChunk(LCD_MAC, buffer_mac, 1);
+
+  uint8_t buffer_3gammaen[] = {0x00};
+  LCD_WriteChunk(LCD_3GAMMA_EN, buffer_3gammaen, 1);
+
+  uint8_t buffer_rgbinterface[] = {0xc2};
+  LCD_WriteChunk(LCD_RGB_INTERFACE, buffer_rgbinterface, 1);
+
+  uint8_t buffer_dfc2[] = {0x0A, 0xA7, 0x27, 0x04};
+  LCD_WriteChunk(LCD_DFC, buffer_dfc2, 4);
+
+  uint8_t buffer_coladdr[] = {0x00, 0x00, 0x00, 0xEF};
+  LCD_WriteChunk(LCD_COLUMN_ADDR, buffer_coladdr, 4);
+
+  uint8_t buffer_pageaddr[] = {0x00, 0x00, 0x01, 0x3F};
+  LCD_WriteChunk(LCD_PAGE_ADDR, buffer_pageaddr, 4);
+
+  uint8_t buffer_interface[] = {0x01, 0x00, 0x06};
+  LCD_WriteChunk(LCD_INTERFACE, buffer_interface, 3);
+
+  LCD_WriteChunk(LCD_GRAM, NULL, 0);
+
+  delay(200);
+
+  uint8_t buffer_gamma[] = {0x01};
+  LCD_WriteChunk(LCD_GAMMA, buffer_gamma, 1);
+
+  uint8_t buffer_pgamma[] = {0x0F, 0x29, 0x24, 0x0C, 0x0E, 0x09, 0x4E, 0x78, 0x3C, 0x09, 0x13, 0x05, 0x17, 0x11, 0x00};
+  LCD_WriteChunk(LCD_PGAMMA, buffer_pgamma, 15);
+
+  uint8_t buffer_ngamma[] = {0x00, 0x16, 0x1B, 0x04, 0x11, 0x07, 0x31, 0x33, 0x42, 0x05, 0x0C, 0x0A, 0x28, 0x2F, 0x0F};
+  LCD_WriteChunk(LCD_NGAMMA, buffer_ngamma, 15);
+
+  LCD_WriteChunk(LCD_SLEEP_OUT, NULL, 0);
+
+  delay(200);
+
+  LCD_WriteChunk(LCD_DISPLAY_ON, NULL, 0);
+  LCD_WriteChunk(LCD_GRAM, NULL, 0);
+}
+
+/**
+  * @brief  Enables the Display.
+  * @param  None
+  * @retval None
+  */
+void LCD_DisplayOn(void)
+{
+  LCD_WriteChunk(LCD_DISPLAY_ON, NULL, 0);
+}
+
+/**
+  * @brief  Disables the Display.
+  * @param  None
+  * @retval None
+  */
+void LCD_DisplayOff(void)
+{
+  LCD_WriteChunk(LCD_DISPLAY_OFF, NULL, 0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
   * @brief  Controls LCD Chip Select (CS) pin
@@ -1531,209 +1548,6 @@ void LCD_FillPolyLine(pPoint Points, uint16_t PointCount)
   LCD_FillTriangle(X_center, X2, X_first, Y_center, Y2, Y_first);
 }
 
-/**
-  * @brief  Writes command to select the LCD register.
-  * @param  LCD_Reg: address of the selected register.
-  * @retval None
-  */
-void LCD_WriteCommand(uint8_t LCD_Reg)
-{
-  gpio_set(lcd_wrx, 0);
-
-  gpio_set(lcd_ncs, 0);
-
-  ssp_write(ssp_5, LCD_Reg);
-
-  while(SPI_I2S_GetFlagStatus(LCD_SPI, SPI_I2S_FLAG_BSY) != RESET);
-
-  gpio_set(lcd_ncs, 1);
-}
-
-/**
-  * @brief  Writes data to select the LCD register.
-  *         This function must be used after LCD_WriteCommand() function
-  * @param  value: data to write to the selected register.
-  * @retval None
-  */
-void LCD_WriteData(uint8_t value)
-{
-  gpio_set(lcd_wrx, 1);
-
-  gpio_set(lcd_ncs, 0);
-
-  ssp_write(ssp_5, value);
-
-  while(SPI_I2S_GetFlagStatus(LCD_SPI, SPI_I2S_FLAG_BSY) != RESET);
-
-  gpio_set(lcd_ncs, 1);
-}
-
-/**
-  * @brief  Configure the LCD controller (Power On sequence as described in ILI9341 Datasheet)
-  * @param  None
-  * @retval None
-  */
-void LCD_PowerOn(void)
-{
-  LCD_WriteCommand(0xCA);
-  LCD_WriteData(0xC3);
-  LCD_WriteData(0x08);
-  LCD_WriteData(0x50);
-  LCD_WriteCommand(LCD_POWERB);
-  LCD_WriteData(0x00);
-  LCD_WriteData(0xC1);
-  LCD_WriteData(0x30);
-  LCD_WriteCommand(LCD_POWER_SEQ);
-  LCD_WriteData(0x64);
-  LCD_WriteData(0x03);
-  LCD_WriteData(0x12);
-  LCD_WriteData(0x81);
-  LCD_WriteCommand(LCD_DTCA);
-  LCD_WriteData(0x85);
-  LCD_WriteData(0x00);
-  LCD_WriteData(0x78);
-  LCD_WriteCommand(LCD_POWERA);
-  LCD_WriteData(0x39);
-  LCD_WriteData(0x2C);
-  LCD_WriteData(0x00);
-  LCD_WriteData(0x34);
-  LCD_WriteData(0x02);
-  LCD_WriteCommand(LCD_PRC);
-  LCD_WriteData(0x20);
-  LCD_WriteCommand(LCD_DTCB);
-  LCD_WriteData(0x00);
-  LCD_WriteData(0x00);
-  LCD_WriteCommand(LCD_FRC);
-  LCD_WriteData(0x00);
-  LCD_WriteData(0x1B);
-  LCD_WriteCommand(LCD_DFC);
-  LCD_WriteData(0x0A);
-  LCD_WriteData(0xA2);
-  LCD_WriteCommand(LCD_POWER1);
-  LCD_WriteData(0x10);
-  LCD_WriteCommand(LCD_POWER2);
-  LCD_WriteData(0x10);
-  LCD_WriteCommand(LCD_VCOM1);
-  LCD_WriteData(0x45);
-  LCD_WriteData(0x15);
-  LCD_WriteCommand(LCD_VCOM2);
-  LCD_WriteData(0x90);
-  LCD_WriteCommand(LCD_MAC);
-  LCD_WriteData(0xC8);
-  LCD_WriteCommand(LCD_3GAMMA_EN);
-  LCD_WriteData(0x00);
-  LCD_WriteCommand(LCD_RGB_INTERFACE);
-  LCD_WriteData(0xC2);
-  LCD_WriteCommand(LCD_DFC);
-  LCD_WriteData(0x0A);
-  LCD_WriteData(0xA7);
-  LCD_WriteData(0x27);
-  LCD_WriteData(0x04);
-
-  /* colomn address set */
-  LCD_WriteCommand(LCD_COLUMN_ADDR);
-  LCD_WriteData(0x00);
-  LCD_WriteData(0x00);
-  LCD_WriteData(0x00);
-  LCD_WriteData(0xEF);
-  /* Page Address Set */
-  LCD_WriteCommand(LCD_PAGE_ADDR);
-  LCD_WriteData(0x00);
-  LCD_WriteData(0x00);
-  LCD_WriteData(0x01);
-  LCD_WriteData(0x3F);
-  LCD_WriteCommand(LCD_INTERFACE);
-  LCD_WriteData(0x01);
-  LCD_WriteData(0x00);
-  LCD_WriteData(0x06);
-
-  LCD_WriteCommand(LCD_GRAM);
-  delay(200);
-
-  LCD_WriteCommand(LCD_GAMMA);
-  LCD_WriteData(0x01);
-
-  LCD_WriteCommand(LCD_PGAMMA);
-  LCD_WriteData(0x0F);
-  LCD_WriteData(0x29);
-  LCD_WriteData(0x24);
-  LCD_WriteData(0x0C);
-  LCD_WriteData(0x0E);
-  LCD_WriteData(0x09);
-  LCD_WriteData(0x4E);
-  LCD_WriteData(0x78);
-  LCD_WriteData(0x3C);
-  LCD_WriteData(0x09);
-  LCD_WriteData(0x13);
-  LCD_WriteData(0x05);
-  LCD_WriteData(0x17);
-  LCD_WriteData(0x11);
-  LCD_WriteData(0x00);
-  LCD_WriteCommand(LCD_NGAMMA);
-  LCD_WriteData(0x00);
-  LCD_WriteData(0x16);
-  LCD_WriteData(0x1B);
-  LCD_WriteData(0x04);
-  LCD_WriteData(0x11);
-  LCD_WriteData(0x07);
-  LCD_WriteData(0x31);
-  LCD_WriteData(0x33);
-  LCD_WriteData(0x42);
-  LCD_WriteData(0x05);
-  LCD_WriteData(0x0C);
-  LCD_WriteData(0x0A);
-  LCD_WriteData(0x28);
-  LCD_WriteData(0x2F);
-  LCD_WriteData(0x0F);
-
-  LCD_WriteCommand(LCD_SLEEP_OUT);
-  delay(200);
-  LCD_WriteCommand(LCD_DISPLAY_ON);
-  /* GRAM start writing */
-  LCD_WriteCommand(LCD_GRAM);
- }
-
-/**
-  * @brief  Enables the Display.
-  * @param  None
-  * @retval None
-  */
-void LCD_DisplayOn(void)
-{
-  LCD_WriteCommand(LCD_DISPLAY_ON);
-}
-
-/**
-  * @brief  Disables the Display.
-  * @param  None
-  * @retval None
-  */
-void LCD_DisplayOff(void)
-{
-    /* Display Off */
-    LCD_WriteCommand(LCD_DISPLAY_OFF);
-}
-
-/**
-  * @brief  Sets or reset LCD control lines.
-  * @param  GPIOx: where x can be B or D to select the GPIO peripheral.
-  * @param  CtrlPins: the Control line.
-  *   This parameter can be:
-  *     @arg LCD_NCS_PIN: Chip Select pin
-  *     @arg LCD_NWR_PIN: Read/Write Selection pin
-  *     @arg LCD_RS_PIN: Register/RAM Selection pin
-  * @param  BitVal: specifies the value to be written to the selected bit.
-  *   This parameter can be:
-  *     @arg Bit_RESET: to clear the port pin
-  *     @arg Bit_SET: to set the port pin
-  * @retval None
-  */
-void LCD_CtrlLinesWrite(GPIO_TypeDef* GPIOx, uint16_t CtrlPins, BitAction BitVal)
-{
-  /* Set or Reset the control line */
-  GPIO_WriteBit(GPIOx, (uint16_t)CtrlPins, (BitAction)BitVal);
-}
-
 
 /**
   * @brief  Displays a pixel.
@@ -1764,3 +1578,134 @@ static void delay(__IO uint32_t nCount)
   }
 }
 #endif
+
+
+
+
+
+
+
+/**
+  * @}
+  */
+
+/** @defgroup STM32F429I_DISCOVERY_LCD_Private_Functions
+  * @{
+  */
+
+/**
+  * @brief  DeInitializes the LCD.
+  * @param  None
+  * @retval None
+  */
+void LCD_DeInit(void)
+{
+  GPIO_InitTypeDef GPIO_InitStructure;
+
+  /* LCD Display Off */
+  LCD_DisplayOff();
+
+  /* LCD_SPI disable */
+  SPI_Cmd(LCD_SPI, DISABLE);
+
+  /* LCD_SPI DeInit */
+  SPI_I2S_DeInit(LCD_SPI);
+
+  /* Disable SPI clock  */
+  RCC_APB2PeriphClockCmd(LCD_SPI_CLK, DISABLE);
+
+  /* Configure NCS in Output Push-Pull mode */
+  GPIO_InitStructure.GPIO_Pin = LCD_NCS_PIN;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_Init(LCD_NCS_GPIO_PORT, &GPIO_InitStructure);
+
+  /* Configure SPI pins: SCK, MISO and MOSI */
+  GPIO_InitStructure.GPIO_Pin = LCD_SPI_SCK_PIN;
+  GPIO_Init(LCD_SPI_SCK_GPIO_PORT, &GPIO_InitStructure);
+
+  GPIO_InitStructure.GPIO_Pin = LCD_SPI_MISO_PIN;
+  GPIO_Init(LCD_SPI_MISO_GPIO_PORT, &GPIO_InitStructure);
+
+  GPIO_InitStructure.GPIO_Pin = LCD_SPI_MOSI_PIN;
+  GPIO_Init(LCD_SPI_MOSI_GPIO_PORT, &GPIO_InitStructure);
+
+  /* GPIOA configuration */
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource3, GPIO_AF_MCO);
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource4, GPIO_AF_MCO);
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource6, GPIO_AF_MCO);
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource11, GPIO_AF_MCO);
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource12, GPIO_AF_MCO);
+
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_6 |
+                                GPIO_Pin_11 | GPIO_Pin_12;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+  /* GPIOB configuration */
+  GPIO_PinAFConfig(GPIOB, GPIO_PinSource0, GPIO_AF_MCO);
+  GPIO_PinAFConfig(GPIOB, GPIO_PinSource1, GPIO_AF_MCO);
+  GPIO_PinAFConfig(GPIOB, GPIO_PinSource8, GPIO_AF_MCO);
+  GPIO_PinAFConfig(GPIOB, GPIO_PinSource9, GPIO_AF_MCO);
+  GPIO_PinAFConfig(GPIOB, GPIO_PinSource10, GPIO_AF_MCO);
+  GPIO_PinAFConfig(GPIOB, GPIO_PinSource11, GPIO_AF_MCO);
+
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0  | GPIO_Pin_1  | GPIO_Pin_8    |
+                                GPIO_Pin_9  |  GPIO_Pin_10 | GPIO_Pin_11;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+  /* GPIOC configuration */
+  GPIO_PinAFConfig(GPIOC, GPIO_PinSource6, GPIO_AF_MCO);
+  GPIO_PinAFConfig(GPIOC, GPIO_PinSource7, GPIO_AF_MCO);
+  GPIO_PinAFConfig(GPIOC, GPIO_PinSource10, GPIO_AF_MCO);
+
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6  | GPIO_Pin_7  | GPIO_Pin_10;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+  /* GPIOD configuration */
+  GPIO_PinAFConfig(GPIOD, GPIO_PinSource3, GPIO_AF_MCO);
+  GPIO_PinAFConfig(GPIOD, GPIO_PinSource6, GPIO_AF_MCO);
+
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3  | GPIO_Pin_6;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+  /* GPIOF configuration */
+  GPIO_PinAFConfig(GPIOF, GPIO_PinSource10, GPIO_AF_MCO);
+
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOF, &GPIO_InitStructure);
+
+  /* GPIOG configuration */
+  GPIO_PinAFConfig(GPIOG, GPIO_PinSource6, GPIO_AF_MCO);
+  GPIO_PinAFConfig(GPIOG, GPIO_PinSource7, GPIO_AF_MCO);
+  GPIO_PinAFConfig(GPIOG, GPIO_PinSource10, GPIO_AF_MCO);
+  GPIO_PinAFConfig(GPIOG, GPIO_PinSource11, GPIO_AF_MCO);
+  GPIO_PinAFConfig(GPIOG, GPIO_PinSource12, GPIO_AF_MCO);
+
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6  | GPIO_Pin_7  | GPIO_Pin_10    |
+                                GPIO_Pin_11 | GPIO_Pin_12;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOG, &GPIO_InitStructure);
+}
