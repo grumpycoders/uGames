@@ -298,7 +298,7 @@ void LCD_WriteChunk(uint8_t command, uint8_t *data, uint8_t nb)
   gpio_set(lcd_wrx, 0);
   gpio_set(lcd_ncs, 0);
   ssp_write(ssp_5, command);
-  while(SPI_I2S_GetFlagStatus(LCD_SPI, SPI_I2S_FLAG_BSY) != RESET);
+  while(SPI_I2S_GetFlagStatus(SPI5, SPI_I2S_FLAG_BSY) != RESET);
   //gpio_set(lcd_ncs, 1);
 
   for (int i = 0 ; i < nb ; i++)
@@ -306,8 +306,7 @@ void LCD_WriteChunk(uint8_t command, uint8_t *data, uint8_t nb)
     gpio_set(lcd_wrx, 1);
     //gpio_set(lcd_ncs, 0);
     ssp_write(ssp_5, data[i]);
-    while(SPI_I2S_GetFlagStatus(LCD_SPI, SPI_I2S_FLAG_BSY) != RESET);
-    
+    while(SPI_I2S_GetFlagStatus(SPI5, SPI_I2S_FLAG_BSY) != RESET);
   }
   gpio_set(lcd_ncs, 1);
 }
@@ -430,26 +429,6 @@ void LCD_DisplayOff(void)
 
 
 
-
-
-
-
-/**
-  * @brief  Controls LCD Chip Select (CS) pin
-  * @param  NewState CS pin state
-  * @retval None
-  */
-void LCD_ChipSelect(FunctionalState NewState)
-{
-  if (NewState == DISABLE)
-  {
-    GPIO_ResetBits(LCD_NCS_GPIO_PORT, LCD_NCS_PIN); /* CS pin low: LCD disabled */
-  }
-  else
-  {
-    GPIO_SetBits(LCD_NCS_GPIO_PORT, LCD_NCS_PIN); /* CS pin high: LCD enabled */
-  }
-}
 
 /**
   * @brief  Sets the LCD Layer.
@@ -1592,7 +1571,7 @@ static void delay(__IO uint32_t nCount)
 /** @defgroup STM32F429I_DISCOVERY_LCD_Private_Functions
   * @{
   */
-
+#if 0
 /**
   * @brief  DeInitializes the LCD.
   * @param  None
@@ -1606,10 +1585,10 @@ void LCD_DeInit(void)
   LCD_DisplayOff();
 
   /* LCD_SPI disable */
-  SPI_Cmd(LCD_SPI, DISABLE);
+  SPI_Cmd(SPI_5, DISABLE);
 
   /* LCD_SPI DeInit */
-  SPI_I2S_DeInit(LCD_SPI);
+  SPI_I2S_DeInit(SPI_5);
 
   /* Disable SPI clock  */
   RCC_APB2PeriphClockCmd(LCD_SPI_CLK, DISABLE);
@@ -1709,3 +1688,4 @@ void LCD_DeInit(void)
   GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
   GPIO_Init(GPIOG, &GPIO_InitStructure);
 }
+#endif

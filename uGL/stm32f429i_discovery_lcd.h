@@ -96,41 +96,6 @@ typedef struct
 
 
 /** 
-  * @brief  LCD Control pin  
-  */ 
-#define LCD_NCS_PIN             GPIO_Pin_2                  
-#define LCD_NCS_GPIO_PORT       GPIOC                      
-#define LCD_NCS_GPIO_CLK        RCC_AHB1Periph_GPIOC 
-
-/** 
-  * @brief  LCD Command/data pin  
-  */
-#define LCD_WRX_PIN             GPIO_Pin_13                  
-#define LCD_WRX_GPIO_PORT       GPIOD
-#define LCD_WRX_GPIO_CLK        RCC_AHB1Periph_GPIOD 
-
-/** 
-  * @brief  LCD SPI Interface pins 
-  */ 
-#define LCD_SPI_SCK_PIN               GPIO_Pin_7                     /* PF.07 */
-#define LCD_SPI_SCK_GPIO_PORT         GPIOF                          /* GPIOF */
-#define LCD_SPI_SCK_GPIO_CLK          RCC_AHB1Periph_GPIOF  
-#define LCD_SPI_SCK_SOURCE            GPIO_PinSource7
-#define LCD_SPI_SCK_AF                GPIO_AF_SPI5
-#define LCD_SPI_MISO_PIN              GPIO_Pin_8                     /* PF.08 */
-#define LCD_SPI_MISO_GPIO_PORT        GPIOF                          /* GPIOF */
-#define LCD_SPI_MISO_GPIO_CLK         RCC_AHB1Periph_GPIOF  
-#define LCD_SPI_MISO_SOURCE           GPIO_PinSource8
-#define LCD_SPI_MISO_AF               GPIO_AF_SPI5
-#define LCD_SPI_MOSI_PIN              GPIO_Pin_9                     /* PF.09 */
-#define LCD_SPI_MOSI_GPIO_PORT        GPIOF                          /* GPIOF */
-#define LCD_SPI_MOSI_GPIO_CLK         RCC_AHB1Periph_GPIOF  
-#define LCD_SPI_MOSI_SOURCE           GPIO_PinSource9
-#define LCD_SPI_MOSI_AF               GPIO_AF_SPI5
-#define LCD_SPI                       SPI5
-#define LCD_SPI_CLK                   RCC_APB2Periph_SPI5 
-
-/** 
   * @brief  LCD Registers  
   */ 
 #define LCD_SLEEP_OUT            0x11   /* Sleep out register */
@@ -250,7 +215,7 @@ typedef struct
   * @{
   */ 
 #define ASSEMBLE_RGB(R, G, B)    ((((R)& 0xF8) << 8) | (((G) & 0xFC) << 3) | (((B) & 0xF8) >> 3))
-#define ASSEMBLE_RGB2(RGB)    (((RGB.r & 0xF8) << 8) | (((RGB.g) & 0xFC) << 3) | (((RGB.b) & 0xF8) >> 3))
+//#define ASSEMBLE_RGB2(RGB)    (((((uint16_t)(RGB.r)) & 0xF8) << 8) | ((((uint16_t)(RGB.g)) & 0xFC) << 3) | ((((uint16_t)(RGB.b)) & 0xF8) >> 3))
 
 /**
   * @}

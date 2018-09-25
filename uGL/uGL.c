@@ -5,9 +5,11 @@
 #include "stm32f429i_discovery_lcd.h"
 #include <stm32f4xx_ltdc.h>
 
-static uint16_t *_framebuffer = (uint16_t *)(LCD_FRAME_BUFFER + BUFFER_OFFSET);
+static uint16_t *_framebuffer = (uint16_t *)(0xD0000000 + 0x50000);
 static const uint16_t screenwidth = 240;
 static const  uint16_t screenheight = 320;
+
+#define ASSEMBLE_RGB2(RGB)    ((((RGB.r) & 0xF8) << 8) | (((RGB.g) & 0xFC) << 3) | (((RGB.b) & 0xF8) >> 3))
 
 void uGL_init()
 {
