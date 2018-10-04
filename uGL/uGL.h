@@ -31,6 +31,9 @@ typedef struct {
 
 void uGL_init();
 
+void uGL_displayOn();
+void uGL_displayOff();
+
 uint16_t uGL_getScreenHeight();
 uint16_t uGL_getScreenWidth();
 
