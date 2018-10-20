@@ -3,7 +3,8 @@ export ROOTDIR = $(CURDIR)/uC-sdk
 export VERBOSE = true
 
 TARGET = bootloader.bin
-TARGET_SRCS = bootloader.c uGL-stm32f429discovery.c uGL/stm32f429i_discovery.c uGL/stm32f429i_discovery_sdram.c uGL/fonts.c
+#TARGET_SRCS = bootloader.c uGL-stm32f429discovery.c uGL/stm32f429i_discovery.c uGL/stm32f429i_discovery_sdram.c uGL/fonts.c
+TARGET_SRCS = bootloader.c uGL/uGL-uGPU.c
 
 LIBDEPS = \
 $(ROOTDIR)/FreeRTOS/libFreeRTOS.a \

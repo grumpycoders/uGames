@@ -1,7 +1,8 @@
 #include <stdlib.h>
 
 #include "uGL/uGL.h"
-
+#include "logo.h"
+/*
 void drawRainbow()
 {
   uGL_color_t c;
@@ -26,12 +27,16 @@ void drawRainbow()
     c.r = 0xff; c.g = 0x00; c.b = 0xff - i * 0xff / 40;
     uGL_drawVLine(i + 200, 0, 10, c);
   }
-}
+}*/
 
 int main()
 {
   uGL_init();
 
+  uGL_sprite_t sprite_logo = { .id = 0, .pixels = &logo};
+  uGl_loadSprite(&sprite_logo);
+  uGl_drawSprite(&sprite_logo, (480 - 64) / 2, (272 - 64) / 2);
+/*
   uGL_color_t backgroundcolor = { .r = 255, .g = 255, .b = 255 };
   uGL_drawRectangle(0, 0, 240, 320, backgroundcolor);
 
@@ -59,7 +64,7 @@ int main()
   uGL_drawHLine(120, 80, 100, hlinecolor);
 
   uGL_color_t vlinecolor = { .r = 250, .g = 240, .b = 10 };
-  uGL_drawVLine(90, 20, 200, vlinecolor);
+  uGL_drawVLine(90, 20, 200, vlinecolor);*/
 
   while(1);
   return 0;
