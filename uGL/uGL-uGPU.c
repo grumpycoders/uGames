@@ -8,7 +8,7 @@
 pin_t cs;
 
 #define SSP ssp_4
-#define SPRITE_SIZE (16*16)
+#define SPRITE_SIZE (64*64)
 
 void ssp_write_uint16(uint16_t v) {
   ssp_write(SSP, (uint8_t)(v >> 8));
